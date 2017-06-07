@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.telephony.gsm.SmsMessage;
 import android.widget.Toast;
 
-public class SmsReciever extends BroadcastReceiver {
+public abstract class SmsReciever extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Bundle bundle = intent.getExtras();
@@ -25,9 +25,11 @@ public class SmsReciever extends BroadcastReceiver {
                 str += "n";
             }
             //---display the new SMS message---
-            
-            Toast.makeText(context, str, Toast.LENGTH_LONG).show();
+            //Intent intent1 = new Intent(MainActivity.this, Display.class);
+            Toast.makeText(context, "Message Recieved", Toast.LENGTH_LONG).show();
+            onNewPosition();
         }
 
     }
+    protected abstract void onNewPosition();
 }
