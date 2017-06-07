@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
                 sendSMS(text);
             }
         });
-
+        
         Button sendAddress = (Button) findViewById(R.id.sendAddressLink);
         final TextView address = (TextView) findViewById(R.id.editAddress);
 
@@ -82,4 +82,6 @@ public class MainActivity extends AppCompatActivity {
         String message = address + ", " + lat + ", " + log;
         sms.sendTextMessage("3604644682", null, message, pi, null);
     }
+
+
 }
