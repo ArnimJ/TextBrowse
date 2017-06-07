@@ -14,6 +14,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
 
     private Spinner spinner;
@@ -24,14 +26,25 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button sendMessage = (Button) findViewById(R.id.sendWikiLink);
+        Button sendWikiMessage = (Button) findViewById(R.id.sendWikiLink);
         final TextView wiki = (TextView) findViewById(R.id.editWiki);
 
-        sendMessage.setOnClickListener(new View.OnClickListener() {
+        sendWikiMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String text = wiki.getText().toString();
                 sendSMS(text);
+            }
+        });
+
+        Button sendAddress = (Button) findViewById(R.id.sendAddressLink);
+        final TextView address = (TextView) findViewById(R.id.editAddress);
+
+        sendAddress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String addy = address.getText().toString();
+                sendSMS(addy);
             }
         });
 
@@ -59,6 +72,14 @@ public class MainActivity extends AppCompatActivity {
         PendingIntent pi = PendingIntent.getActivity(this, 0,
                 new Intent(this, MainActivity.class), 0);
         SmsManager sms = SmsManager.getDefault();
+        sms.sendTextMessage("3604644682", null, message, pi, null);
+    }
+
+    private void sendAddySMS(String address, int lat, int log) {
+        PendingIntent pi = PendingIntent.getActivity(this, 0,
+                new Intent(this, MainActivity.class), 0);
+        SmsManager sms = SmsManager.getDefault();
+        String message = address + ", " + lat + ", " + log;
         sms.sendTextMessage("3604644682", null, message, pi, null);
     }
 }
