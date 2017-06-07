@@ -10,8 +10,26 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="edu.virginia.cs4720aj7eb.textbrowse.MainActivity">
 
-    <TextView
+    <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:inputType="text"
+        android:text="Please Enter a Wiki topic"
+        android:ems="10"
+        android:layout_marginTop="18dp"
+        android:id="@+id/editWiki"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@+id/button"
+        android:layout_alignParentEnd="true" />
+
+    <Button
+        android:text="GO"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/sendLink"
+        android:layout_below="@+id/editWiki"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp" />
+
 </RelativeLayout>
