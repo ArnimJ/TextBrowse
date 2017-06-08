@@ -18,6 +18,5 @@ public class Display extends AppCompatActivity {
         String value = intent.getStringExtra("data");
 
         msg.setText(value);
-
     }
 }
