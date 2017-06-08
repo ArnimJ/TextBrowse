@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.telephony.gsm.SmsMessage;
-import android.view.View;
 import android.widget.Toast;
 
 public class SmsReciever extends BroadcastReceiver {
@@ -25,6 +24,8 @@ public class SmsReciever extends BroadcastReceiver {
                 str += msgs[i].getMessageBody().toString();
             }
             str = str.substring(38);
+
+
             //---display the new SMS message---
 
             //Intent intent1 = new Intent(MainActivity.this, Display.class);
@@ -33,6 +34,7 @@ public class SmsReciever extends BroadcastReceiver {
             Intent broadcastIntent = new Intent();
             broadcastIntent.setAction("SMS_RECEIVED_ACTION");
             broadcastIntent.putExtra("message", str);
+//            broadcastIntent.putExtra("message2", parts[1]);
             context.sendBroadcast(broadcastIntent);
 
 

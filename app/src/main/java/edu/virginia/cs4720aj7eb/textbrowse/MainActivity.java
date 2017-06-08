@@ -34,8 +34,10 @@ public class MainActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             Intent displayIntent = new Intent(MainActivity.this, Display.class);
             String text = intent.getExtras().getString("message");
+//            String text2 = intent.getExtras().getString("message2");
             System.out.println(text);
             displayIntent.putExtra("data", text);
+//            displayIntent.putExtra("data2", text2);
             findViewById(R.id.loadingPanel).setVisibility(View.GONE);
             MainActivity.this.startActivity(displayIntent);
         }
