@@ -88,8 +88,6 @@ public class MainActivity extends AppCompatActivity {
                 sendSMS(text);
             }
         });
-
-        //Sending address to map sms
         Button sendAddress = (Button) findViewById(R.id.sendAddressLink);
         final TextView startAddress = (TextView) findViewById(R.id.startAddress);
         final TextView endAddress = (TextView) findViewById(R.id.endAddress);
@@ -143,4 +141,6 @@ public class MainActivity extends AppCompatActivity {
         String message = "[translate]"+start + "__" + end + "__" + text;
         sms.sendTextMessage("3604644682", null, message, pi, null);
     }
+
+
 }
