@@ -51,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.loadingPanel).setVisibility(View.GONE);
 
 
+
+
         intentFilter = new IntentFilter();
         intentFilter.addAction("SMS_RECEIVED_ACTION");
 
