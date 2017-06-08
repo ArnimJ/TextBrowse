@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private Spinner startLangSpinner;
     private Spinner endLangSpinner;
     private Spinner travelSpinner;
-    private static final String[] languages = {"En", "Es", "Fr"};
+    private static final String[] languages = {"English", "Espanol", "Francais", "Chinese"};
     private static final String[] travelModes = {"Driving", "Bicycling", "Walking", "Transit"};
     IntentFilter intentFilter;
 
@@ -220,12 +220,34 @@ public class MainActivity extends AppCompatActivity {
     private void sendTranslateSMS(String start, String end, String text) {
         String SENT = "message sent";
         String DElIVERED = "message delivered";
+        String startLang = "";
+        String endLang = "";
+
+        if(start.equals("English")) {
+            startLang = "En";
+        } else if (start.equals("Espanol")) {
+            startLang = "Es";
+        } else if (start.equals("Francais")){
+            startLang = "Fr";
+        } else {
+            endLang = "Zh";
+        }
+
+        if(end.equals("English")) {
+            endLang = "En";
+        } else if (end.equals("Espanol")) {
+            endLang = "Es";
+        } else if (end.equals("Francais")) {
+            endLang = "Fr";
+        } else {
+            endLang = "Zh";
+        }
 
         PendingIntent sentPI = PendingIntent.getBroadcast(this, 0, new Intent(SENT),0);
         PendingIntent deliveredPI = PendingIntent.getBroadcast(this, 0, new Intent(DElIVERED),0);
 
         SmsManager sms = SmsManager.getDefault();
-        String message = "[translate]"+start + "__" + end + "__" + text;
+        String message = "[translate]"+startLang + "__" + endLang + "__" + text;
         sms.sendTextMessage("3604644682", null, message, sentPI, deliveredPI);
 
 
