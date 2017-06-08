@@ -1,6 +1,7 @@
 package edu.virginia.cs4720aj7eb.textbrowse;
 
 
+import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -10,6 +11,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.telephony.gsm.SmsManager;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.AdapterView;
@@ -105,17 +107,43 @@ public class MainActivity extends AppCompatActivity {
         //Sending message to wiki sms
         Button sendWikiMessage = (Button) findViewById(R.id.sendWikiLink);
         final TextView wiki = (TextView) findViewById(R.id.editWiki);
+        wiki.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    hideKeyboard(v);
+                }
+            }
+        });
         sendWikiMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String text = wiki.getText().toString();
                 findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
+                hideKeyboard(v);
                 sendSMS(text);
             }
         });
         Button sendAddress = (Button) findViewById(R.id.sendAddressLink);
         final TextView startAddress = (TextView) findViewById(R.id.startAddress);
         final TextView endAddress = (TextView) findViewById(R.id.endAddress);
+
+        startAddress.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    hideKeyboard(v);
+                }
+            }
+        });
+        endAddress.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    hideKeyboard(v);
+                }
+            }
+        });
 
         sendAddress.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,13 +152,24 @@ public class MainActivity extends AppCompatActivity {
                 String endAddy = endAddress.getText().toString();
                 String mode = travelSpinner.getItemAtPosition(travelSpinner.getSelectedItemPosition()).toString();
                 findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
+                hideKeyboard(v);
                 sendAddySMS(startAddy, endAddy, mode);
+
             }
         });
 
         //Sending address to translate sms
         Button translateText = (Button) findViewById(R.id.sendTranslateLink);
         final TextView text = (TextView) findViewById(R.id.editTranslate);
+
+        text.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    hideKeyboard(v);
+                }
+            }
+        });
 
         translateText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -139,6 +178,7 @@ public class MainActivity extends AppCompatActivity {
                 String start = startLangSpinner.getItemAtPosition(startLangSpinner.getSelectedItemPosition()).toString();
                 String end = endLangSpinner.getItemAtPosition(endLangSpinner.getSelectedItemPosition()).toString();
                 findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
+                hideKeyboard(v);
                 sendTranslateSMS(start, end, t);
             }
         });
@@ -204,6 +244,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause(){
         unregisterReceiver(intentReceiver);
         super.onPause();
+    }
+
+    public void hideKeyboard(View view) {
+        InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
 

@@ -5,6 +5,8 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clickable="true"
+    android:focusableInTouchMode="true"
     tools:context="edu.virginia.cs4720aj7eb.textbrowse.MainActivity">
 
 
@@ -15,7 +17,8 @@
         android:layout_marginTop="13dp"
         app:layout_constraintTop_toBottomOf="@+id/editTranslate"
         android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginEnd="8dp" />
 
     <TextView
         android:id="@+id/textView3"
@@ -132,7 +135,8 @@
         android:layout_marginTop="13dp"
         app:layout_constraintTop_toBottomOf="@+id/editTranslate"
         android:layout_marginLeft="8dp"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginStart="8dp" />
 
     <android.support.constraint.Guideline
         android:layout_width="wrap_content"
@@ -189,18 +193,28 @@
         app:layout_constraintTop_toBottomOf="@+id/editTranslate"
         app:layout_constraintLeft_toRightOf="@+id/startLanguage"
         android:layout_marginLeft="8dp"
-        app:layout_constraintHorizontal_bias="0.516" />
+        app:layout_constraintHorizontal_bias="0.516"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp" />
 
-    <RelativeLayout
+    <android.support.constraint.ConstraintLayout
         android:id="@+id/loadingPanel"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center" >
+        android:layout_width="47dp"
+        android:layout_height="428dp"
+        android:gravity="center"
+        app:layout_constraintRight_toLeftOf="@+id/editTranslate"
+        app:layout_constraintLeft_toRightOf="@+id/editTranslate"
+        app:layout_constraintBottom_toTopOf="@+id/textView5"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ProgressBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:indeterminate="true" />
-    </RelativeLayout>
+            android:indeterminate="true"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </android.support.constraint.ConstraintLayout>
 
 </android.support.constraint.ConstraintLayout>
