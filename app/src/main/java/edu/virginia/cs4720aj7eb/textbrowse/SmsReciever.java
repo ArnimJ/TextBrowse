@@ -23,6 +23,7 @@ public class SmsReciever extends BroadcastReceiver {
                 //str += " :";
                 str += msgs[i].getMessageBody().toString();
             }
+            str = str.substring(38);
             //---display the new SMS message---
 
 

@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private Spinner endLangSpinner;
     private Spinner travelSpinner;
     private static final String[] languages = {"En", "Es", "Fr"};
-    private static final String[] travelModes = {"driving", "bicycling", "walking", "transit"};
+    private static final String[] travelModes = {"Driving", "Bicycling", "Walking", "Transit"};
     IntentFilter intentFilter;
 
     private BroadcastReceiver intentReceiver = new BroadcastReceiver() {
