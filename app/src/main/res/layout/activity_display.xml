@@ -15,6 +15,7 @@
         android:text="Hi there my name is arnim and i am and awsome person fasdffasdffasdf"
         android:ems="10"
         android:id="@+id/response"
+
         android:inputType="text"
         tools:layout_constraintTop_creator="1"
         android:layout_marginTop="48dp"
@@ -42,3 +43,4 @@
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp" />
 </android.support.constraint.ConstraintLayout>
+

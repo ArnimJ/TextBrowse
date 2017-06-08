@@ -12,9 +12,19 @@ import android.telephony.gsm.SmsManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
+
+    private Spinner startLangSpinner;
+    private Spinner endLangSpinner;
+    private Spinner travelSpinner;
+    private static final String[] languages = {"En", "Es", "Fr"};
+    private static final String[] travelModes = {"Driving", "Bicycling", "Walking", "Transit"};
     IntentFilter intentFilter;
 
     private BroadcastReceiver intentReceiver = new BroadcastReceiver() {
@@ -28,10 +38,12 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         intentFilter = new IntentFilter();
         intentFilter.addAction("SMS_RECEIVED_ACTION");
@@ -39,13 +51,94 @@ public class MainActivity extends AppCompatActivity {
 
 
         Button sendMessage = (Button) findViewById(R.id.sendLink);
-        final TextView wiki = (TextView) findViewById(R.id.editWiki);
+        final TextView wiki = (TextView) findViewById(R.id.editWiki);     
+        //Starting language drop down
+        startLangSpinner = (Spinner)findViewById(R.id.startLanguage);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_item, languages);
 
-        sendMessage.setOnClickListener(new View.OnClickListener() {
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        startLangSpinner.setAdapter(adapter);
+        startLangSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        //End translation drop down
+        endLangSpinner = (Spinner)findViewById(R.id.endLanguage);
+        ArrayAdapter<String> endAdapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_item, languages);
+
+        endAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        endLangSpinner.setAdapter(endAdapter);
+        endLangSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        //Address drop down
+        travelSpinner = (Spinner)findViewById(R.id.travelMode);
+        ArrayAdapter<String> travelAdapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_item, travelModes);
+
+
+        travelAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        travelSpinner.setAdapter(travelAdapter);
+        travelSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        //Sending message to wiki sms
+        Button sendWikiMessage = (Button) findViewById(R.id.sendWikiLink);
+        final TextView wiki = (TextView) findViewById(R.id.editWiki);
+        sendWikiMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String text = wiki.getText().toString();
                 sendSMS(text);
+            }
+        });
+        Button sendAddress = (Button) findViewById(R.id.sendAddressLink);
+        final TextView startAddress = (TextView) findViewById(R.id.startAddress);
+        final TextView endAddress = (TextView) findViewById(R.id.endAddress);
+
+        sendAddress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String startAddy = startAddress.getText().toString();
+                String endAddy = endAddress.getText().toString();
+                String mode = travelSpinner.getItemAtPosition(travelSpinner.getSelectedItemPosition()).toString();
+                sendAddySMS(startAddy, endAddy, mode);
+            }
+        });
+
+        //Sending address to translate sms
+        Button translateText = (Button) findViewById(R.id.sendTranslateLink);
+        final TextView text = (TextView) findViewById(R.id.editTranslate);
+
+        translateText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String t = text.getText().toString();
+                String start = startLangSpinner.getItemAtPosition(startLangSpinner.getSelectedItemPosition()).toString();
+                String end = endLangSpinner.getItemAtPosition(endLangSpinner.getSelectedItemPosition()).toString();
+                sendTranslateSMS(start, end, t);
             }
         });
     }
@@ -59,7 +152,27 @@ public class MainActivity extends AppCompatActivity {
         PendingIntent deliveredPI = PendingIntent.getBroadcast(this, 0, new Intent(DElIVERED),0);
 
         SmsManager sms = SmsManager.getDefault();
-        sms.sendTextMessage("3604644682", null, message, sentPI, deliveredPI);
+
+        //sms.sendTextMessage("3604644682", null, message, sentPI, deliveredPI);
+
+        sms.sendTextMessage("3604644682", null, "[wiki]"+message, pi, null);
+    }
+
+    private void sendAddySMS(String start, String end, String mode) {
+        PendingIntent pi = PendingIntent.getActivity(this, 0,
+                new Intent(this, MainActivity.class), 0);
+        SmsManager sms = SmsManager.getDefault();
+        String message = "[map]"+start + "__" + end + "__" + mode;
+        sms.sendTextMessage("3604644682", null, message, pi, null);
+    }
+
+    private void sendTranslateSMS(String start, String end, String text) {
+        PendingIntent pi = PendingIntent.getActivity(this, 0,
+                new Intent(this, MainActivity.class), 0);
+        SmsManager sms = SmsManager.getDefault();
+        String message = "[translate]"+start + "__" + end + "__" + text;
+        sms.sendTextMessage("3604644682", null, message, pi, null);
+
     }
 
     @Override
