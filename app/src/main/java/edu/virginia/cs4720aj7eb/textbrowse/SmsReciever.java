@@ -26,7 +26,7 @@ public class SmsReciever extends BroadcastReceiver {
             }
             //---display the new SMS message---
 
-            Toast.makeText(context, str, Toast.LENGTH_LONG).show();
+            //Toast.makeText(context, str, Toast.LENGTH_LONG).show();
         }
 
     }
