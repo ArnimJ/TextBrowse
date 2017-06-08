@@ -198,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
 
         //sms.sendTextMessage("3604644682", null, message, sentPI, deliveredPI);
 
-        sms.sendTextMessage("3604644682", null, "[wiki]"+message, sentPI, deliveredPI);
+        sms.sendTextMessage("3016033677", null, "[wiki]"+message, sentPI, deliveredPI);
 
         Context context = getApplicationContext();
         Toast.makeText(context, "Message Sent, please wait...", Toast.LENGTH_LONG).show();
@@ -250,7 +250,7 @@ public class MainActivity extends AppCompatActivity {
 
         SmsManager sms = SmsManager.getDefault();
         String message = "[translate]"+startLang + "__" + endLang + "__" + text;
-        sms.sendTextMessage("3604644682", null, message, sentPI, deliveredPI);
+        sms.sendTextMessage("3016033677", null, message, sentPI, deliveredPI);
 
 
         Context context = getApplicationContext();
