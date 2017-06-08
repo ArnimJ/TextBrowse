@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private Spinner endLangSpinner;
     private Spinner travelSpinner;
     private static final String[] languages = {"En", "Es", "Fr"};
-    private static final String[] travelModes = {"Driving", "Bicycling", "Walking", "Transit"};
+    private static final String[] travelModes = {"driving", "bicycling", "walking", "transit"};
     IntentFilter intentFilter;
 
     private BroadcastReceiver intentReceiver = new BroadcastReceiver() {
@@ -48,10 +48,6 @@ public class MainActivity extends AppCompatActivity {
         intentFilter = new IntentFilter();
         intentFilter.addAction("SMS_RECEIVED_ACTION");
 
-
-
-        Button sendMessage = (Button) findViewById(R.id.sendLink);
-        final TextView wiki = (TextView) findViewById(R.id.editWiki);     
         //Starting language drop down
         startLangSpinner = (Spinner)findViewById(R.id.startLanguage);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_item, languages);
@@ -155,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
 
         //sms.sendTextMessage("3604644682", null, message, sentPI, deliveredPI);
 
-        sms.sendTextMessage("3604644682", null, "[wiki]"+message, pi, null);
+        sms.sendTextMessage("3604644682", null, "[wiki]"+message, sentPI, deliveredPI);
     }
 
     private void sendAddySMS(String start, String end, String mode) {
@@ -163,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
                 new Intent(this, MainActivity.class), 0);
         SmsManager sms = SmsManager.getDefault();
         String message = "[map]"+start + "__" + end + "__" + mode;
-        sms.sendTextMessage("3604644682", null, message, pi, null);
+        sms.sendTextMessage("12019928470", null, message, pi, null);
     }
 
     private void sendTranslateSMS(String start, String end, String text) {
