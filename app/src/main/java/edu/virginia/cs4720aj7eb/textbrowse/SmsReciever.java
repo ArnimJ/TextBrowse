@@ -19,12 +19,12 @@ public class SmsReciever extends BroadcastReceiver {
             msgs = new SmsMessage[pdus.length];
             for (int i = 0; i < msgs.length; i++) {
                 msgs[i] = SmsMessage.createFromPdu((byte[]) pdus[i]);
-                str += "SMS from " + msgs[i].getOriginatingAddress();
-                str += " :";
+                //str += "SMS from " + msgs[i].getOriginatingAddress();
+                //str += " :";
                 str += msgs[i].getMessageBody().toString();
-                str += "n";
             }
             //---display the new SMS message---
+
 
             //Intent intent1 = new Intent(MainActivity.this, Display.class);
             Toast.makeText(context, "Message Recieved", Toast.LENGTH_LONG).show();
