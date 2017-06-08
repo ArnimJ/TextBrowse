@@ -26,7 +26,15 @@ public class SmsReciever extends BroadcastReceiver {
             }
             //---display the new SMS message---
 
-            //Toast.makeText(context, str, Toast.LENGTH_LONG).show();
+            //Intent intent1 = new Intent(MainActivity.this, Display.class);
+            Toast.makeText(context, "Message Recieved", Toast.LENGTH_LONG).show();
+
+            Intent broadcastIntent = new Intent();
+            broadcastIntent.setAction("SMS_RECEIVED_ACTION");
+            broadcastIntent.putExtra("message", str);
+            context.sendBroadcast(broadcastIntent);
+
+
         }
 
     }

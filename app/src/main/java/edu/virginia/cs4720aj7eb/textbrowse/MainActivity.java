@@ -2,7 +2,10 @@ package edu.virginia.cs4720aj7eb.textbrowse;
 
 
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.telephony.gsm.SmsManager;
@@ -16,17 +19,39 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
+
     private Spinner startLangSpinner;
     private Spinner endLangSpinner;
     private Spinner travelSpinner;
     private static final String[] languages = {"En", "Es", "Fr"};
     private static final String[] travelModes = {"Driving", "Bicycling", "Walking", "Transit"};
+    IntentFilter intentFilter;
+
+    private BroadcastReceiver intentReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Intent displayIntent = new Intent(MainActivity.this, Display.class);
+            String text = intent.getExtras().getString("message");
+            System.out.println(text);
+            displayIntent.putExtra("data", text);
+            MainActivity.this.startActivity(displayIntent);
+        }
+    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+        intentFilter = new IntentFilter();
+        intentFilter.addAction("SMS_RECEIVED_ACTION");
+
+
+
+        Button sendMessage = (Button) findViewById(R.id.sendLink);
+        final TextView wiki = (TextView) findViewById(R.id.editWiki);     
         //Starting language drop down
         startLangSpinner = (Spinner)findViewById(R.id.startLanguage);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_item, languages);
@@ -64,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
         //Address drop down
         travelSpinner = (Spinner)findViewById(R.id.travelMode);
         ArrayAdapter<String> travelAdapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_item, travelModes);
+
 
         travelAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         travelSpinner.setAdapter(travelAdapter);
@@ -118,11 +144,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //---sends an SMS message to another device---
-    private void sendSMS(String message)
-    {
-        PendingIntent pi = PendingIntent.getActivity(this, 0,
-                new Intent(this, MainActivity.class), 0);
+    private void sendSMS(String message) {
+        String SENT = "message sent";
+        String DElIVERED = "message delivered";
+
+        PendingIntent sentPI = PendingIntent.getBroadcast(this, 0, new Intent(SENT),0);
+        PendingIntent deliveredPI = PendingIntent.getBroadcast(this, 0, new Intent(DElIVERED),0);
+
         SmsManager sms = SmsManager.getDefault();
+
+        //sms.sendTextMessage("3604644682", null, message, sentPI, deliveredPI);
+
         sms.sendTextMessage("3604644682", null, "[wiki]"+message, pi, null);
     }
 
@@ -140,7 +172,21 @@ public class MainActivity extends AppCompatActivity {
         SmsManager sms = SmsManager.getDefault();
         String message = "[translate]"+start + "__" + end + "__" + text;
         sms.sendTextMessage("3604644682", null, message, pi, null);
+
     }
+
+    @Override
+    protected void onResume(){
+        registerReceiver(intentReceiver, intentFilter);
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause(){
+        unregisterReceiver(intentReceiver);
+        super.onPause();
+    }
+
 
 
 }
