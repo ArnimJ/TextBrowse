@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
             String text = intent.getExtras().getString("message");
             System.out.println(text);
             displayIntent.putExtra("data", text);
+            findViewById(R.id.loadingPanel).setVisibility(View.GONE);
             MainActivity.this.startActivity(displayIntent);
         }
     };
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        findViewById(R.id.loadingPanel).setVisibility(View.GONE);
 
 
         intentFilter = new IntentFilter();
@@ -107,6 +109,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String text = wiki.getText().toString();
+                findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
                 sendSMS(text);
             }
         });
@@ -120,6 +123,7 @@ public class MainActivity extends AppCompatActivity {
                 String startAddy = startAddress.getText().toString();
                 String endAddy = endAddress.getText().toString();
                 String mode = travelSpinner.getItemAtPosition(travelSpinner.getSelectedItemPosition()).toString();
+                findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
                 sendAddySMS(startAddy, endAddy, mode);
             }
         });
@@ -134,6 +138,7 @@ public class MainActivity extends AppCompatActivity {
                 String t = text.getText().toString();
                 String start = startLangSpinner.getItemAtPosition(startLangSpinner.getSelectedItemPosition()).toString();
                 String end = endLangSpinner.getItemAtPosition(endLangSpinner.getSelectedItemPosition()).toString();
+                findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
                 sendTranslateSMS(start, end, t);
             }
         });
@@ -152,22 +157,40 @@ public class MainActivity extends AppCompatActivity {
         //sms.sendTextMessage("3604644682", null, message, sentPI, deliveredPI);
 
         sms.sendTextMessage("3604644682", null, "[wiki]"+message, sentPI, deliveredPI);
+
+        Context context = getApplicationContext();
+        Toast.makeText(context, "Message Sent, please wait...", Toast.LENGTH_LONG).show();
     }
 
     private void sendAddySMS(String start, String end, String mode) {
-        PendingIntent pi = PendingIntent.getActivity(this, 0,
-                new Intent(this, MainActivity.class), 0);
+        String SENT = "message sent";
+        String DElIVERED = "message delivered";
+
+        PendingIntent sentPI = PendingIntent.getBroadcast(this, 0, new Intent(SENT),0);
+        PendingIntent deliveredPI = PendingIntent.getBroadcast(this, 0, new Intent(DElIVERED),0);
+
         SmsManager sms = SmsManager.getDefault();
         String message = "[map]"+start + "__" + end + "__" + mode;
-        sms.sendTextMessage("12019928470", null, message, pi, null);
+        sms.sendTextMessage("12019928470", null, message, sentPI, deliveredPI);
+
+        Context context = getApplicationContext();
+        Toast.makeText(context, "Message Sent, please wait...", Toast.LENGTH_LONG).show();
     }
 
     private void sendTranslateSMS(String start, String end, String text) {
-        PendingIntent pi = PendingIntent.getActivity(this, 0,
-                new Intent(this, MainActivity.class), 0);
+        String SENT = "message sent";
+        String DElIVERED = "message delivered";
+
+        PendingIntent sentPI = PendingIntent.getBroadcast(this, 0, new Intent(SENT),0);
+        PendingIntent deliveredPI = PendingIntent.getBroadcast(this, 0, new Intent(DElIVERED),0);
+
         SmsManager sms = SmsManager.getDefault();
         String message = "[translate]"+start + "__" + end + "__" + text;
-        sms.sendTextMessage("3604644682", null, message, pi, null);
+        sms.sendTextMessage("3604644682", null, message, sentPI, deliveredPI);
+
+
+        Context context = getApplicationContext();
+        Toast.makeText(context, "Message Sent, please wait...", Toast.LENGTH_LONG).show();
 
     }
 
